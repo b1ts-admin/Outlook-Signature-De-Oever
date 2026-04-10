@@ -4,7 +4,7 @@
   xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
   xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="MailApp">
   <Id>{C341AD31-BF7A-4C1D-99F1-D2E5896BEB0A}</Id>
-  <Version>1.0</Version>
+  <Version>1.1</Version>
   <ProviderName>De Oever</ProviderName>
   <DefaultLocale>nl-be</DefaultLocale>
   <DisplayName DefaultValue="Handtekeningen"/>
