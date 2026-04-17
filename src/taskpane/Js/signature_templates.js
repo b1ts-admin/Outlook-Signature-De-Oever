@@ -14,10 +14,8 @@ function get_template_A_str(user_info)
   str += "<br/>";
   str += "<span style=\"color:#0073a5;font-size:small;\">" + user_info.job + "</span>";
   str += "</p>";
-  str += "";
-  str += "<p>";
+  str += "<span style=\"color:rgb(0,66,89);font-size:12.22px;\">" + user_info.pronoun + "</span>";
   str += "<a style=\"color:#004259 !important';font-size:small;text-decoration:none;\" href=\"https://www.deoever.be\"><strong>www.deoever.be</strong></a>";
-  str += "</p>";
   str += "<table style=\"height:20pt;width:500pt;\">";
   str +=   "<colgroup><col style=\"width:10%;\"><col style=\"width:90%;\"></colgroup>";
   str +=   "<tbody>";
