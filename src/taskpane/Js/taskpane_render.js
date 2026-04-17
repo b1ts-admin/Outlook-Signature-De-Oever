@@ -27,6 +27,7 @@ function on_initialization_complete()
       _phone_number = $("input#phone_number");
       _greeting_text = $("input#greeting_text");
       _preferred_pronoun = $("input#preferred_pronoun");
+      _work_addess = $("input#work_addess");
       _message = $("p#message");
 
       prepopulate_from_userprofile();
@@ -59,6 +60,7 @@ function load_saved_user_info()
     _phone_number.val(user_info.phone);
     _greeting_text.val(user_info.greeting);
     _preferred_pronoun.val(user_info.pronoun);
+    _work_addess.val(user_info.work_addess);
   }
 }
 
@@ -124,6 +126,7 @@ function create_user_info()
     user_info.phone = _phone_number.val().trim();
     user_info.greeting = _greeting_text.val().trim();
     user_info.pronoun = _preferred_pronoun.val().trim();
+    user_info.work_addess = _work_addess.val().trim();
 
     console.log(user_info);
     localStorage.setItem('user_info', JSON.stringify(user_info));
@@ -139,6 +142,7 @@ function clear_all_fields()
   _phone_number.val("");
   _greeting_text.val("");
   _preferred_pronoun.val("");
+  _work_addess.val("");
 }
 
 function clear_all_localstorage_data()

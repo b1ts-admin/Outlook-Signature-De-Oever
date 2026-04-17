@@ -133,7 +133,7 @@
     position: relative;
     left: 17px;
     width: 290px;
-    height: 136px;
+    height: auto;
     border: 1px solid #DDDDDD;
     border-radius: 2px;
     color: #573d3d;
@@ -145,7 +145,7 @@
     position: relative;
     left: 17px;
     width: 290px;
-    height: 106px;
+    height: auto;
     border: 1px solid #DDDDDD;
     border-radius: 2px;
     color: #573d3d;
@@ -157,7 +157,7 @@
     position: relative;
     left: 17px;
     width: 290px;
-    height: 65px;
+    height: auto;
     border: 1px solid #DDDDDD;
     border-radius: 2px;
     color: #573d3d;
