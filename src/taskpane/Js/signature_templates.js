@@ -32,9 +32,7 @@ function get_template_A_str(user_info)
   str +=     "</tr>";
   str +=   "</tbody>";
   str += "</table>";
-  str += "<p>";
-  str +=   "<img class=\"image_resized\" style=\"width:500pt;\" src=\"https://www.deoever.be/wp-content/uploads/2024/09/banner-algemeen.png\"><br>";
-  str += "</p>";
+  str += "<img style=\"width:500pt;\" src=\"https://www.deoever.be/wp-content/uploads/2024/09/banner-algemeen.png\"><br>";
   str += "<p style=\"text-align:justify;color: gray;font-size: xx-small\">";
   str +=   "Deze e-mail en zijn bijlagen zijn uitsluitend bestemd voor de geadresseerde(n) en strikt vertrouwelijk. Hun inhoud kan bij wet beschermd zijn. Indien de mail niet voor u bestemd is, is elke publicatie, reproductie, kopie, distributie of andere verspreiding of gebruik ervan ten strengste verboden. Als u deze boodschap per vergissing toegestuurd kreeg, gelieve de afzender onmiddellijk te verwittigen en de e-mail te vernietigen. Vzw De Oever besteedt de uiterste zorg aan de betrouwbaarheid en actualiteit van de gegevens die het verspreidt. Desalniettemin blijven fouten mogelijk, ook bij de transmissie van de gegevens. De overgebrachte informatie kan onderschept, gewijzigd of vernietigd zijn. Ze kan ook verloren gaan, te laat of onvolledig aankomen of een virus bevatten. Vzw De Oever aanvaardt bijgevolg geen enkele verantwoordelijkheid voor schade als gevolg van onjuistheden of van problemen veroorzaakt door of inherent aan het verspreiden van informatie via e-mail, evenals voor technische storingen en virussen.";
   str += "</p>";
