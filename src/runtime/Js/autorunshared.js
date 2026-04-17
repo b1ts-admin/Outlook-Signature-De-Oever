@@ -192,28 +192,7 @@ function get_command_id() {
  */
 function get_template_A_info(user_info) {
   const logoFileName = "sample-logo.png";
-  let str = "";
-  if (is_valid_data(user_info.greeting)) {
-    str += user_info.greeting + "<br/>";
-  }
-
-  str += "<table>";
-  str += "<tr>";
-  // Embed the logo using <img src='cid:...
-  str +=
-    "<td style='border-right: 1px solid #000000; padding-right: 5px;'><img src='cid:" +
-    logoFileName +
-    "' alt='MS Logo' width='24' height='24' /></td>";
-  str += "<td style='padding-left: 5px;'>";
-  str += "<strong>" + user_info.name + "</strong>";
-  str += is_valid_data(user_info.pronoun) ? "&nbsp;" + user_info.pronoun : "";
-  str += "<br/>";
-  str += is_valid_data(user_info.job) ? user_info.job + "<br/>" : "";
-  str += user_info.email + "<br/>";
-  str += is_valid_data(user_info.phone) ? user_info.phone + "<br/>" : "";
-  str += "</td>";
-  str += "</tr>";
-  str += "</table>";
+  let str = get_template_A_str(user_info);
 
   // return object with signature HTML, logo image base64 string, and filename to reference it with.
   return {
@@ -234,25 +213,7 @@ function get_template_A_info(user_info) {
     "logoFileName": null since this template references the image and does not embed it
  */
 function get_template_B_info(user_info) {
-  let str = "";
-  if (is_valid_data(user_info.greeting)) {
-    str += user_info.greeting + "<br/>";
-  }
-
-  str += "<table>";
-  str += "<tr>";
-  // Reference the logo using a URI to the web server <img src='https://...
-  str +=
-    "<td style='border-right: 1px solid #000000; padding-right: 5px;'><img src='https://officedev.github.io/Office-Add-in-samples/Samples/outlook-set-signature/assets/sample-logo.png' alt='Logo' /></td>";
-  str += "<td style='padding-left: 5px;'>";
-  str += "<strong>" + user_info.name + "</strong>";
-  str += is_valid_data(user_info.pronoun) ? "&nbsp;" + user_info.pronoun : "";
-  str += "<br/>";
-  str += user_info.email + "<br/>";
-  str += is_valid_data(user_info.phone) ? user_info.phone + "<br/>" : "";
-  str += "</td>";
-  str += "</tr>";
-  str += "</table>";
+  let str = get_template_B_str(user_info);
 
   return {
     signature: str,
@@ -270,13 +231,7 @@ function get_template_B_info(user_info) {
     "logoFileName": null since there is no image
  */
 function get_template_C_info(user_info) {
-  let str = "";
-  if (is_valid_data(user_info.greeting)) {
-    str += user_info.greeting + "<br/>";
-  }
-
-  str += user_info.name;
-
+  let str = get_template_C_str(user_info);
   return {
     signature: str,
     logoBase64: null,
