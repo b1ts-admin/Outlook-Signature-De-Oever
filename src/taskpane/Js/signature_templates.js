@@ -6,7 +6,9 @@ function get_template_A_str(user_info)
   let str = "";
   if (is_valid_data(user_info.greeting))
   {
-    str += "<p>" + user_info.greeting + "</p>";
+    str += "<p>" + user_info.greeting;
+    str += is_valid_data(user_info.booking_link) ? "<br><a href=\"" + user_info.booking_link + "\"><span style=\"color:rgb(0,0,0);font-size:12pt;\"><picture><source srcset=\"https://ckbox.cloud/caab7c40545f8a590534/assets/kOtRSNxoIDv9/images/20.webp 20w\" sizes=\"(max-width: 20px) 100vw, 20px\" type=\"image/webp\"><img src=\"https://ckbox.cloud/caab7c40545f8a590534/assets/kOtRSNxoIDv9/images/20.png\" width=\"20\" height=\"20\"></picture></span><span style=\"color:rgb(0,120,212);font-size:12pt;\">Maak een afspraak voor een gesprek met mij</span></a>" : "";
+    str += "</p>";
   }
 
   str += "<p style=\"color:#004259;font-size:medium;\">";

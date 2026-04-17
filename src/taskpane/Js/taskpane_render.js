@@ -28,6 +28,7 @@ function on_initialization_complete()
       _greeting_text = $("input#greeting_text");
       _preferred_pronoun = $("input#preferred_pronoun");
       _work_address = $("input#work_address");
+      _booking_link = $("input#booking_link");
       _message = $("p#message");
 
       prepopulate_from_userprofile();
@@ -61,6 +62,7 @@ function load_saved_user_info()
     _greeting_text.val(user_info.greeting);
     _preferred_pronoun.val(user_info.pronoun);
     _work_address.val(user_info.work_address);
+    _booking_link.val(user_info.booking_link);
   }
 }
 
@@ -127,6 +129,7 @@ function create_user_info()
     user_info.greeting = _greeting_text.val().trim();
     user_info.pronoun = _preferred_pronoun.val().trim();
     user_info.work_address = _work_address.val().trim();
+    user_info.booking_link = _booking_link.val().trim();
 
     console.log(user_info);
     localStorage.setItem('user_info', JSON.stringify(user_info));
@@ -143,6 +146,7 @@ function clear_all_fields()
   _greeting_text.val("");
   _preferred_pronoun.val("");
   _work_address.val("");
+  _booking_link.val("");
 }
 
 function clear_all_localstorage_data()
