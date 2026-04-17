@@ -58,12 +58,7 @@ function load_saved_user_info()
     _job_title.val(user_info.job);
     _phone_number.val(user_info.phone);
     _greeting_text.val(user_info.greeting);
-
-    let pronoun = user_info.pronoun;
-    if (pronoun && pronoun.length >= 3)
-    {
-      _preferred_pronoun.val(pronoun.substring(1, pronoun.length - 1));
-    }
+    _preferred_pronoun.val(user_info.pronoun);
   }
 }
 
@@ -129,11 +124,6 @@ function create_user_info()
     user_info.phone = _phone_number.val().trim();
     user_info.greeting = _greeting_text.val().trim();
     user_info.pronoun = _preferred_pronoun.val().trim();
-
-    if (user_info.pronoun !== "")
-    {
-      user_info.pronoun = "(" + user_info.pronoun + ")";
-    }
 
     console.log(user_info);
     localStorage.setItem('user_info', JSON.stringify(user_info));
