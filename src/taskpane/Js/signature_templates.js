@@ -18,15 +18,15 @@ function get_template_A_str(user_info)
   str += "<p>";
   str += "<a style=\"color:#004259 !important';font-size:small;text-decoration:none;\" href=\"https://www.deoever.be\"><strong>www.deoever.be</strong></a>";
   str += "</p>";
-  str += "<table style=\"table-layout: fixed;\">";
+  str += "<table style=\"width:500pt;\">";
   str +=   "<colgroup><col style=\"width:10%;\"><col style=\"width:90%;\"></colgroup>";
   str +=   "<tbody>";
-  str +=     "<tr style=\"height:20px\">";
-  str +=       "<td>"
-  str +=         "<a href=\"https://be.linkedin.com/company/vzw-de-oever\"><img style=\"border-width:0;\" src=\"https://imgmsgen.com/img/bookmark/ln.png\"> </a><a style=\"border-width:0;\" href=\"https://www.instagram.com/deoevervzw/\"><img src=\"https://imgmsgen.com/img/bookmark/it.png\"></a>";
-  str +=       "</td style=\"word-break: break-all;font-size: x-small;\">";
-  str +=         "<strong>Partner Agentschap Opgroeien - Jeugdhulp</strong><br>"
-  str +=         "<span style=\"color:#0073a5;font-size:x-small;\">0413.895.634 | RPR Ondernemingsrechtbank Antwerpen afdeling Hasselt</span>"
+  str +=     "<tr>";
+  str +=       "<td style=\"height:20px;width:50px;\">"
+  str +=         "<a href=\"https://be.linkedin.com/company/vzw-de-oever\"><img src=\"https://imgmsgen.com/img/bookmark/ln.png\" width=\"20\" height=\"20\"> </a><a href=\"https://www.instagram.com/deoevervzw/\"><img src=\"https://imgmsgen.com/img/bookmark/it.png\" width=\"20\" height=\"20\"></a>";
+  str +=       "<td style=\"height:20px;width:450px;\">";
+  str +=         "<span style=\"color:rgb(0,0,0);\"><strong>Partner Agentschap Opgroeien - Jeugdhulp</strong></span><br>"
+  str +=         "<span style=\"color:rgb(0,115,165);\">0413.895.634 | RPR Ondernemingsrechtbank Antwerpen afdeling Hasselt</span>"
   str +=       "<td>";
   str +=     "</tr>";
   str +=   "</tbody>";
