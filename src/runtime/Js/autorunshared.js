@@ -192,7 +192,41 @@ function get_command_id() {
  */
 function get_template_A_info(user_info) {
   const logoFileName = "sample-logo.png";
-  let str = get_template_A_str(user_info);
+  let str = "";
+  if (is_valid_data(user_info.greeting))
+  {
+    str += is_valid_data(user_info.booking_link) ? "<p>" + user_info.working_hours : "";
+    str += is_valid_data(user_info.booking_link) ? "<br><a href=\"" + user_info.booking_link + "\"><span style=\"color:rgb(0,0,0);font-size:12pt;\"><picture><source srcset=\"https://ckbox.cloud/caab7c40545f8a590534/assets/kOtRSNxoIDv9/images/20.webp 20w\" sizes=\"(max-width: 20px) 100vw, 20px\" type=\"image/webp\"><img src=\"https://ckbox.cloud/caab7c40545f8a590534/assets/kOtRSNxoIDv9/images/20.png\" width=\"20\" height=\"20\"></picture></span><span style=\"color:rgb(0,120,212);font-size:12pt;\">Maak een afspraak voor een gesprek met mij</span></a>" : "";
+    str += is_valid_data(user_info.booking_link) ? "</p>" : "";
+    str += "<p>" + user_info.greeting + "</p>";
+  }
+
+  str += "<p style=\"color:#004259;font-size:medium;\">";
+  str += "<strong>" + user_info.name + "</strong>";
+  str += "<br/>";
+  str += "<span style=\"color:#0073a5;font-size:small;\">" + user_info.job + "</span>";
+  str += "</p>";
+  str += "<span style=\"color:rgb(0,66,89);font-size:12.22px;\">" + user_info.work_address + "</span><br>";
+  str += "<a style=\"color:#004259 !important';font-size:small;text-decoration:none;\" href=\"https://www.deoever.be\"><strong>www.deoever.be</strong></a>";
+  str += "<table style=\"height:20pt;width:500pt;\">";
+  str +=   "<colgroup><col style=\"width:10%;\"><col style=\"width:90%;\"></colgroup>";
+  str +=   "<tbody>";
+  str +=     "<tr>";
+  str +=       "<td style=\"height:20pt;width:50pt;\">"
+  str +=         "<a href=\"https://be.linkedin.com/company/vzw-de-oever\"><img src=\"https://imgmsgen.com/img/bookmark/ln.png\" width=\"20\" height=\"20\"> </a><a href=\"https://www.instagram.com/deoevervzw/\"><img src=\"https://imgmsgen.com/img/bookmark/it.png\" width=\"20\" height=\"20\"></a>";
+  str +=       "</td>"
+  str +=       "<td style=\"height:20pt;width:450pt;\">";
+  str +=         "<span style=\"color:rgb(0,0,0);\"><strong>Partner Agentschap Opgroeien - Jeugdhulp</strong></span><br>"
+  str +=         "<span style=\"color:rgb(0,115,165);\">0413.895.634 | RPR Ondernemingsrechtbank Antwerpen afdeling Hasselt</span>"
+  str +=       "</td>";
+  str +=     "</tr>";
+  str +=   "</tbody>";
+  str += "</table>";
+  str += "<img style=\"width:500pt;\" src=\"https://www.deoever.be/wp-content/uploads/2024/09/banner-algemeen.png\"><br>";
+  str += "<p style=\"text-align:justify;color: gray;font-size: xx-small\">";
+  str +=   "Deze e-mail en zijn bijlagen zijn uitsluitend bestemd voor de geadresseerde(n) en strikt vertrouwelijk. Hun inhoud kan bij wet beschermd zijn. Indien de mail niet voor u bestemd is, is elke publicatie, reproductie, kopie, distributie of andere verspreiding of gebruik ervan ten strengste verboden. Als u deze boodschap per vergissing toegestuurd kreeg, gelieve de afzender onmiddellijk te verwittigen en de e-mail te vernietigen. Vzw De Oever besteedt de uiterste zorg aan de betrouwbaarheid en actualiteit van de gegevens die het verspreidt. Desalniettemin blijven fouten mogelijk, ook bij de transmissie van de gegevens. De overgebrachte informatie kan onderschept, gewijzigd of vernietigd zijn. Ze kan ook verloren gaan, te laat of onvolledig aankomen of een virus bevatten. Vzw De Oever aanvaardt bijgevolg geen enkele verantwoordelijkheid voor schade als gevolg van onjuistheden of van problemen veroorzaakt door of inherent aan het verspreiden van informatie via e-mail, evenals voor technische storingen en virussen.";
+  str += "</p>";
+
 
   // return object with signature HTML, logo image base64 string, and filename to reference it with.
   return {
