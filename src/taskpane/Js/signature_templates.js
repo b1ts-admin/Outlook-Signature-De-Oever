@@ -23,7 +23,7 @@ function get_template_A_str(user_info)
   str +=   "<tbody>";
   str +=     "<tr style=\"height:20px\">";
   str +=       "<td>"
-  str +=         "<a href=\"https://be.linkedin.com/company/vzw-de-oever\"><img style=\"border-width:0;\" src=\"https://www.mail-signatures.com/signature-generator/img/templates/csr-07/ln.png\"> </a><a style=\"border-width:0;\" href=\"https://www.instagram.com/deoevervzw/\"><img src=\"https://www.mail-signatures.com/signature-generator/img/templates/csr-07/it.png\"></a>";
+  str +=         "<a href=\"https://be.linkedin.com/company/vzw-de-oever\"><img style=\"border-width:0;\" src=\"https://imgmsgen.com/img/bookmark/ln.png\"> </a><a style=\"border-width:0;\" href=\"https://www.instagram.com/deoevervzw/\"><img src=\"https://imgmsgen.com/img/bookmark/it.png\"></a>";
   str +=       "</td style=\"word-break: break-all;font-size: x-small;\">";
   str +=         "<strong>Partner Agentschap Opgroeien - Jeugdhulp</strong><br>"
   str +=         "<span style=\"color:#0073a5;font-size:x-small;\">0413.895.634 | RPR Ondernemingsrechtbank Antwerpen afdeling Hasselt</span>"
