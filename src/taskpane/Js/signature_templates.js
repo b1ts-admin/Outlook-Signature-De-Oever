@@ -24,10 +24,11 @@ function get_template_A_str(user_info)
   str +=     "<tr>";
   str +=       "<td style=\"height:20pt;width:50pt;\">"
   str +=         "<a href=\"https://be.linkedin.com/company/vzw-de-oever\"><img src=\"https://imgmsgen.com/img/bookmark/ln.png\" width=\"20\" height=\"20\"> </a><a href=\"https://www.instagram.com/deoevervzw/\"><img src=\"https://imgmsgen.com/img/bookmark/it.png\" width=\"20\" height=\"20\"></a>";
+  str +=       "</td>"
   str +=       "<td style=\"height:20pt;width:450pt;\">";
   str +=         "<span style=\"color:rgb(0,0,0);\"><strong>Partner Agentschap Opgroeien - Jeugdhulp</strong></span><br>"
   str +=         "<span style=\"color:rgb(0,115,165);\">0413.895.634 | RPR Ondernemingsrechtbank Antwerpen afdeling Hasselt</span>"
-  str +=       "<td>";
+  str +=       "</td>";
   str +=     "</tr>";
   str +=   "</tbody>";
   str += "</table>";
