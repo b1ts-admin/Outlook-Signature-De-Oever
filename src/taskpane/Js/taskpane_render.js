@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+import { createNestablePublicClientApplication } from "@azure/msal-browser";
+
 let _display_name;
 let _job_title;
 let _phone_number;
