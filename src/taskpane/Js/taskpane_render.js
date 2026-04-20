@@ -14,27 +14,42 @@ Office.initialize = function(reason)
   on_initialization_complete();
 }
 
-async function getGraphToken() {
-  try {
-    // Requires Nested App Authentication (NAA) setup in manifest
-    const accessToken = await Office.auth.getAccessToken({ allowSignInPrompt: true });
-    return accessToken;
-  } catch (error) {
-    console.error("Token acquisition failed: ", error);
-  }
-}
+import { createNestablePublicClientApplication } from "@azure/msal-browser";
 
-async function getUserJobTitle() {
-  const token = await getGraphToken();
-  
-  const response = await fetch("https://microsoft.com", {
-    headers: {
-      "Authorization": `Bearer ${token}`
+let msalClient;
+
+Office.onReady(async () => {
+    // Initialiseer de nestable client
+    msalClient = await createNestablePublicClientApplication({
+        auth: {
+            clientId: "e918ad24-1435-4770-b576-3a17f2a8b25a",
+            authority: "https://microsoftonline.com"
+        }
+    });
+});
+
+async function getJobTitleWithNAA() {
+    const authRequest = {
+        scopes: ["User.Read"],
+        account: (await msalClient.getAllAccounts())[0] // Gebruik het huidige account
+    };
+
+    try {
+        // Vraag token aan (Office handelt de login op de achtergrond af)
+        const response = await msalClient.acquireTokenSilent(authRequest);
+        const accessToken = response.accessToken;
+
+        // Roep Microsoft Graph aan
+        const graphResponse = await fetch("https://microsoft.com", {
+            headers: { 'Authorization': `Bearer ${accessToken}` }
+        });
+        
+        const userData = await graphResponse.json();
+        console.log("Functietitel:", userData.jobTitle);
+    } catch (error) {
+        // Fallback naar interactieve login als silent faalt
+        await msalClient.acquireTokenPopup(authRequest);
     }
-  });
-
-  const data = await response.json();
-  return data.jobTitle || "Team Member"; // Fallback if title is empty
 }
 
 function on_initialization_complete()
@@ -65,7 +80,10 @@ function prepopulate_from_userprofile()
 {
   _display_name.val(Office.context.mailbox.userProfile.displayName);
   _email_id.val(Office.context.mailbox.userProfile.emailAddress);
-  _job_title.val(await getUserJobTitle());
+  (async () => {
+    _job_title.val(await getUserJobTitle());
+  })()
+  
 }
 
 function load_saved_user_info()
