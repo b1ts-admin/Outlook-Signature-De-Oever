@@ -8,13 +8,13 @@ let _email_id;
 let _greeting_text;
 let _preferred_pronoun;
 let _message;
+let _booking_link;
+let _working_hours;
 
 Office.initialize = function(reason)
 {
   on_initialization_complete();
 }
-
-import { createNestablePublicClientApplication } from "@azure/msal-browser";
 
 let msalClient;
 
