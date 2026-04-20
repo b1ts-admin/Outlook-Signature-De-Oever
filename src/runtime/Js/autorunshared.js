@@ -11,29 +11,6 @@
  * @returns
  */
 
-async function getGraphToken() {
-  try {
-    // Requires Nested App Authentication (NAA) setup in manifest
-    const accessToken = await Office.auth.getAccessToken({ allowSignInPrompt: true });
-    return accessToken;
-  } catch (error) {
-    console.error("Token acquisition failed: ", error);
-  }
-}
-
-async function getUserJobTitle() {
-  const token = await getGraphToken();
-  
-  const response = await fetch("https://microsoft.com", {
-    headers: {
-      "Authorization": `Bearer ${token}`
-    }
-  });
-
-  const data = await response.json();
-  return data.jobTitle || "Team Member"; // Fallback if title is empty
-}
-
 function checkSignature(eventObj) {
   let user_info_str = Office.context.roamingSettings.get("user_info");
   if (!user_info_str) {

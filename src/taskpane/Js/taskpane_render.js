@@ -14,6 +14,29 @@ Office.initialize = function(reason)
   on_initialization_complete();
 }
 
+async function getGraphToken() {
+  try {
+    // Requires Nested App Authentication (NAA) setup in manifest
+    const accessToken = await Office.auth.getAccessToken({ allowSignInPrompt: true });
+    return accessToken;
+  } catch (error) {
+    console.error("Token acquisition failed: ", error);
+  }
+}
+
+async function getUserJobTitle() {
+  const token = await getGraphToken();
+  
+  const response = await fetch("https://microsoft.com", {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  });
+
+  const data = await response.json();
+  return data.jobTitle || "Team Member"; // Fallback if title is empty
+}
+
 function on_initialization_complete()
 {
 	$(document).ready
@@ -42,6 +65,7 @@ function prepopulate_from_userprofile()
 {
   _display_name.val(Office.context.mailbox.userProfile.displayName);
   _email_id.val(Office.context.mailbox.userProfile.emailAddress);
+  _job_title.val(getUserJobTitle());
 }
 
 function load_saved_user_info()
