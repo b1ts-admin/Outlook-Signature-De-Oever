@@ -81,7 +81,7 @@ function prepopulate_from_userprofile()
   _display_name.val(Office.context.mailbox.userProfile.displayName);
   _email_id.val(Office.context.mailbox.userProfile.emailAddress);
   (async () => {
-    _job_title.val(await getUserJobTitle());
+    _job_title.val(await getJobTitleWithNAA());
   })()
   
 }
