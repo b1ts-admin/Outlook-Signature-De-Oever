@@ -46,7 +46,7 @@ async function getJobTitleWithNAA() {
     if (!pca) await initializeNAA();
 
     const authRequest = {
-        scopes: ["https://microsoft.com"] // Gebruik de volledige Graph scope
+        scopes: ["https://microsoft.com/User.Read"] // Gebruik de volledige Graph scope
     };
 
     try {
