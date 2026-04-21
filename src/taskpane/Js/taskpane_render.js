@@ -16,15 +16,18 @@ Office.initialize = function(reason)
   on_initialization_complete();
 }
 
+const pca;
+
+const msalConfig;
+
 async function initializeNAA() {
     const msalConfig = {
         auth: {
-            clientId: "e918ad24-1435-4770-b576-3a17f2a8b25a", // Jouw App ID
+            clientId: "JOUW_CLIENT_ID",
             authority: "https://microsoftonline.com",
             supportsNestedAppAuth: true
         }
     };
-
     // De 'msal' variabele is nu globaal beschikbaar
     const pca = await msal.createNestablePublicClientApplication(msalConfig);
 
