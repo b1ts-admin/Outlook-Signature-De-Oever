@@ -16,27 +16,35 @@ Office.initialize = function(reason)
   on_initialization_complete();
 }
 
-let msalClient;
-
-Office.onReady(async () => {
-    // Initialiseer de nestable client
-    msalClient = await createNestablePublicClientApplication({
+async function initializeNAA() {
+    const msalConfig = {
         auth: {
-            clientId: "e918ad24-1435-4770-b576-3a17f2a8b25a",
-            authority: "https://microsoftonline.com"
+            clientId: "e918ad24-1435-4770-b576-3a17f2a8b25a", // Jouw App ID
+            authority: "https://microsoftonline.com",
+            supportsNestedAppAuth: true
         }
-    });
-});
+    };
+
+    // De 'msal' variabele is nu globaal beschikbaar
+    const pca = await msal.createNestablePublicClientApplication(msalConfig);
+
+    const tokenRequest = {
+        scopes: ["User.Read"]
+    };
+
+    const result = await pca.acquireTokenSilent(tokenRequest);
+    console.log("Access Token:", result.accessToken);
+}
 
 async function getJobTitleWithNAA() {
     const authRequest = {
         scopes: ["User.Read"],
-        account: (await msalClient.getAllAccounts())[0] // Gebruik het huidige account
+        account: (await msalConfig.getAllAccounts())[0] // Gebruik het huidige account
     };
 
     try {
         // Vraag token aan (Office handelt de login op de achtergrond af)
-        const response = await msalClient.acquireTokenSilent(authRequest);
+        const response = await msalConfig.acquireTokenSilent(authRequest);
         const accessToken = response.accessToken;
 
         // Roep Microsoft Graph aan
@@ -48,7 +56,7 @@ async function getJobTitleWithNAA() {
         console.log("Functietitel:", userData.jobTitle);
     } catch (error) {
         // Fallback naar interactieve login als silent faalt
-        await msalClient.acquireTokenPopup(authRequest);
+        await msalConfig.acquireTokenPopup(authRequest);
     }
 }
 
