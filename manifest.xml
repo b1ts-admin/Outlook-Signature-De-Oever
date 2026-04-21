@@ -7,18 +7,20 @@
   <Version>1.1</Version>
   <ProviderName>De Oever</ProviderName>
   <DefaultLocale>nl-be</DefaultLocale>
-  <DisplayName DefaultValue="Handtekeningen"/>
-  <Description DefaultValue="Insert your signature with ease."/>
-  <IconUrl DefaultValue="https://b1ts-admin.github.io/Outlook-Signature-De-Oever/assets/final_logo.png"/>
-  <HighResolutionIconUrl DefaultValue="https://b1ts-admin.github.io/Outlook-Signature-De-Oever/assets/final_logo.jpg"/>
-  <SupportUrl DefaultValue="https://www.contoso.com/help"/>
+  <DisplayName DefaultValue="Handtekeningen" />
+  <Description DefaultValue="Insert your signature with ease." />
+  <IconUrl
+    DefaultValue="https://b1ts-admin.github.io/Outlook-Signature-De-Oever/assets/final_logo.png" />
+  <HighResolutionIconUrl
+    DefaultValue="https://b1ts-admin.github.io/Outlook-Signature-De-Oever/assets/final_logo.jpg" />
+  <SupportUrl DefaultValue="https://www.contoso.com/help" />
   <AppDomains>
     <AppDomain>https://www.deoever.be</AppDomain>
   </AppDomains>
   <Hosts>
-    <Host Name="Mailbox"/>
+    <Host Name="Mailbox" />
   </Hosts>
-  
+
   <Requirements>
     <Sets DefaultMinVersion="1.1">
       <Set Name="Mailbox" />
@@ -29,7 +31,8 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://b1ts-admin.github.io/Outlook-Signature-De-Oever/src/taskpane/HTML/editsignature.html"/>
+        <SourceLocation
+          DefaultValue="https://b1ts-admin.github.io/Outlook-Signature-De-Oever/src/taskpane/HTML/editsignature.html" />
         <RequestedHeight>250</RequestedHeight>
       </DesktopSettings>
     </Form>
@@ -41,8 +44,10 @@
   <DisableEntityHighlighting>true</DisableEntityHighlighting>
   <!-- /Old schema. -->
 
-  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
-    <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xsi:type="VersionOverridesV1_1">
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides"
+    xsi:type="VersionOverridesV1_0">
+    <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1"
+      xsi:type="VersionOverridesV1_1">
       <Description resid="residAppDesc" />
 
       <Requirements>
@@ -53,11 +58,12 @@
 
       <Hosts>
         <Host xsi:type="MailHost">
-        <!-- Specify the runtime for event-based activation. -->
-        <!-- For more information, see https://learn.microsoft.com/office/dev/add-ins/outlook/autolaunch -->
+          <!-- Specify the runtime for event-based activation. -->
+          <!-- For more information, see
+          https://learn.microsoft.com/office/dev/add-ins/outlook/autolaunch -->
           <Runtimes>
             <Runtime resid="Autorun">
-              <Override type="javascript" resid="runtimeJs"/>
+              <Override type="javascript" resid="runtimeJs" />
             </Runtime>
           </Runtimes>
 
@@ -65,9 +71,9 @@
             <ExtensionPoint xsi:type="MessageComposeCommandSurface">
               <OfficeTab id="TabDefault">
                 <Group id="mccsG0">
-                  <Label resid="residGL0"/>
+                  <Label resid="residGL0" />
                   <Control xsi:type="Button" id="MRCS_TpBtn0">
-                    <Label resid="residStr0"/>
+                    <Label resid="residStr0" />
                     <Supertip>
                       <Title resid="residStr0" />
                       <Description resid="residTT0" />
@@ -78,7 +84,7 @@
                       <bt:Image size="80" resid="Icon16x16" />
                     </Icon>
                     <Action xsi:type="ShowTaskpane">
-                      <SourceLocation resid="residUrl0"/>
+                      <SourceLocation resid="residUrl0" />
                     </Action>
                   </Control>
                 </Group>
@@ -88,12 +94,12 @@
             <ExtensionPoint xsi:type="AppointmentOrganizerCommandSurface">
               <OfficeTab id="TabDefault">
                 <Group id="aocsG0">
-                  <Label resid="residGL0"/>
+                  <Label resid="residGL0" />
                   <Control xsi:type="Button" id="MRCS_TpBtn1">
-                    <Label resid="residStr0"/>
+                    <Label resid="residStr0" />
                     <Supertip>
-                      <Title resid="residStr0"/>
-                      <Description resid="residTT0"/>
+                      <Title resid="residStr0" />
+                      <Description resid="residTT0" />
                     </Supertip>
                     <Icon>
                       <bt:Image size="16" resid="Icon16x16" />
@@ -101,13 +107,13 @@
                       <bt:Image size="80" resid="Icon16x16" />
                     </Icon>
                     <Action xsi:type="ShowTaskpane">
-                      <SourceLocation resid="residUrl0"/>
+                      <SourceLocation resid="residUrl0" />
                     </Action>
                   </Control>
                 </Group>
               </OfficeTab>
             </ExtensionPoint>
-            
+
             <!-- Specify function to call for new message and new appointment events -->
             <ExtensionPoint xsi:type="LaunchEvent">
               <LaunchEvents>
@@ -123,12 +129,16 @@
       </Hosts>
       <Resources>
         <bt:Images>
-          <bt:Image id="Icon16x16" DefaultValue="https://b1ts-admin.github.io/Outlook-Signature-De-Oever/assets/final_logo.png"></bt:Image>
+          <bt:Image id="Icon16x16"
+            DefaultValue="https://b1ts-admin.github.io/Outlook-Signature-De-Oever/assets/final_logo.png"></bt:Image>
         </bt:Images>
         <bt:Urls>
-          <bt:Url id="residUrl0" DefaultValue="https://b1ts-admin.github.io/Outlook-Signature-De-Oever/src/taskpane/HTML/editsignature.html"></bt:Url>
-          <bt:Url id="Autorun" DefaultValue="https://b1ts-admin.github.io/Outlook-Signature-De-Oever/src/runtime/HTML/autorunweb.html"></bt:Url>
-          <bt:Url id="runtimeJs" DefaultValue="https://b1ts-admin.github.io/Outlook-Signature-De-Oever/src/runtime/Js/autorunshared.js"></bt:Url>
+          <bt:Url id="residUrl0"
+            DefaultValue="https://b1ts-admin.github.io/Outlook-Signature-De-Oever/src/taskpane/HTML/editsignature.html"></bt:Url>
+          <bt:Url id="Autorun"
+            DefaultValue="https://b1ts-admin.github.io/Outlook-Signature-De-Oever/src/runtime/HTML/autorunweb.html"></bt:Url>
+          <bt:Url id="runtimeJs"
+            DefaultValue="https://b1ts-admin.github.io/Outlook-Signature-De-Oever/src/runtime/Js/autorunshared.js"></bt:Url>
         </bt:Urls>
         <bt:ShortStrings>
           <bt:String id="residGL0" DefaultValue="Signature Injector"></bt:String>
@@ -139,6 +149,21 @@
           <bt:String id="residTT0" DefaultValue="Opens a pane displaying all available properties."></bt:String>
         </bt:LongStrings>
       </Resources>
+      <WebApplicationInfo>
+        <!-- The Application (client) ID from your Azure App Registration -->
+        <Id>042ae580-0c2c-46f8-9fa0-1eee631c9c41</Id>
+
+        <!-- The Application ID URI (e.g., api://localhost:3000/YOUR_CLIENT_ID_GUID) -->
+        <Resource>api://localhost:3000/042ae580-0c2c-46f8-9fa0-1eee631c9c41</Resource>
+
+        <Scopes>
+          <!-- List the Graph scopes your add-in needs -->
+          <Scope>openid</Scope>
+          <Scope>profile</Scope>
+          <Scope>User.Read</Scope>
+          <Scope>Mail.Read</Scope>
+        </Scopes>
+      </WebApplicationInfo>
     </VersionOverrides>
   </VersionOverrides>
 </OfficeApp>
