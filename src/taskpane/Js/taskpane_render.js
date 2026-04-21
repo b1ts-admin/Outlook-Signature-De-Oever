@@ -16,50 +16,48 @@ Office.initialize = function(reason)
   on_initialization_complete();
 }
 
-let pca;
-
-let msalConfig;
+let pca; // We gebruiken één globale variabele voor de MSAL instantie
 
 async function initializeNAA() {
     const msalConfig = {
         auth: {
-            clientId: "JOUW_CLIENT_ID",
-            authority: "https://microsoftonline.com",
+            clientId: "e918ad24-1435-4770-b576-3a17f2a8b25a", // Vul hier je echte Client ID in
+            authority: "https://microsoftonline.com", // Moet de volledige URL zijn
             supportsNestedAppAuth: true
         }
     };
-    // De 'msal' variabele is nu globaal beschikbaar
-    const pca = await msal.createNestablePublicClientApplication(msalConfig);
 
-    const tokenRequest = {
-        scopes: ["User.Read"]
-    };
-
-    const result = await pca.acquireTokenSilent(tokenRequest);
-    console.log("Access Token:", result.accessToken);
+    // Initialiseer de globale pca variabele
+    pca = await msal.createNestablePublicClientApplication(msalConfig);
+    console.log("NAA Initialized");
 }
 
 async function getJobTitleWithNAA() {
+    // Zorg dat NAA eerst geïnitialiseerd is
+    if (!pca) await initializeNAA();
+
     const authRequest = {
-        scopes: ["User.Read"],
-        account: (await msalConfig.getAllAccounts())[0] // Gebruik het huidige account
+        scopes: ["https://microsoft.com"] // Gebruik de volledige Graph scope
     };
 
     try {
-        // Vraag token aan (Office handelt de login op de achtergrond af)
-        const response = await msalConfig.acquireTokenSilent(authRequest);
+        // Bij NAA hoef je vaak geen account mee te geven aan acquireTokenSilent, 
+        // de host (Outlook) weet al wie de gebruiker is.
+        const response = await pca.acquireTokenSilent(authRequest);
         const accessToken = response.accessToken;
 
-        // Roep Microsoft Graph aan
+        // Roep de juiste Microsoft Graph endpoint aan
         const graphResponse = await fetch("https://microsoft.com", {
             headers: { 'Authorization': `Bearer ${accessToken}` }
         });
         
         const userData = await graphResponse.json();
         console.log("Functietitel:", userData.jobTitle);
+        return userData.jobTitle;
+
     } catch (error) {
-        // Fallback naar interactieve login als silent faalt
-        await msalConfig.acquireTokenPopup(authRequest);
+        console.error("Token aanvraag mislukt:", error);
+        // Let op: acquireTokenPopup werkt niet in alle Outlook-omgevingen zonder Office Dialog API
     }
 }
 
