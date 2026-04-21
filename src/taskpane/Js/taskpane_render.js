@@ -30,7 +30,7 @@ Office.onReady(async (info) => {
 async function initializeNAA() {
     const msalConfig = {
         auth: {
-            clientId: "e918ad24-1435-4770-b576-3a17f2a8b25a", // Vul hier je echte Client ID in
+            clientId: "042ae580-0c2c-46f8-9fa0-1eee631c9c41", // Vul hier je echte Client ID in
             authority: "https://microsoftonline.com", // Moet de volledige URL zijn
             supportsNestedAppAuth: true
         }
