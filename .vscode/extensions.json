@@ -4,6 +4,7 @@
 
   // List of extensions which should be recommended for users of this workspace.
   "recommendations": [
+    "ms-edgedevtools.vscode-edge-devtools",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode"
   ],

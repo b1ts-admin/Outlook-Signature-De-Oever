@@ -1,287 +1,150 @@
 ---
-title: "Set your signature using Outlook event-based activation"
 page_type: sample
-urlFragment: outlook-add-in-set-signature
+urlFragment: outlook-add-in-sso-naa
 products:
-  - office-outlook
-  - office
-  - office-teams
   - m365
+  - office
+  - office-outlook
 languages:
   - javascript
 extensions:
   contentType: samples
   technologies:
     - Add-ins
-  createdDate: 04/02/2021 10:00:00 AM
-description: "Use Outlook event-based activation to set the signature."
+  createdDate: "03/19/2024 10:00:00 AM"
+description: "This sample shows how to implement SSO in an Outlook add-in by using nested app authentication."
 ---
 
-# Set your signature using Outlook event-based activation
-
-**Applies to:** Outlook on Windows ([new](https://support.microsoft.com/office/656bb8d9-5a60-49b2-a98b-ba7822bc7627) and classic) | Outlook on the web | Outlook on Mac (new UI)
+# Outlook add-in with SSO using nested app authentication
 
 ## Summary
 
-This sample uses event-based activation to run an Outlook add-in when the user creates a new message or appointment. The add-in can respond to events, even when the task pane isn't open. It also uses the [setSignatureAsync API](https://learn.microsoft.com/javascript/api/outlook/office.body#outlook-office-body-setsignatureasync-member(1)). If no signature is set, the add-in prompts the user to set a signature, and can then open the task pane for the user.
-
-![Sample displaying an information bar prompting the user to set up signatures, the task pane where the signature can be set, and a sample signature inserted into the email.](./assets/outlook-set-signature-overview.png)
-
-For documentation related to this sample, see [Configure your Outlook add-in for event-based activation](https://learn.microsoft.com/office/dev/add-ins/outlook/autolaunch).
+This sample shows how to use MSAL.js nested app authentication (NAA) in an Outlook Add-in to access Microsoft Graph APIs for the signed in user. The sample displays the signed in user's name and email. It also inserts the names of files from the user's Microsoft OneDrive account into a new message body.
 
 ## Features
 
-- Use event-based activation to respond to events when the task pane isn't open.
-- Set a signature for Outlook to use in messages and appointments.
+- Use MSAL.js NAA to get an access token to call Microsoft Graph APIs.
+- Fall back to using the Office dialog API for auth when NAA unavailable.
 
 ## Applies to
 
-- Outlook
-  - Windows (new and classic)
-  - Web browser
-  - new Mac UI
+- Outlook on Windows (new and classic), Mac, mobile, and on the web.
 
 ## Prerequisites
 
-- Microsoft 365
+- Office connected to a Microsoft 365 subscription (including Office on the web).
+- [Node.js](https://nodejs.org/) (latest recommended version).
+- [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) version 8 or greater.
 
-    > **Note**: If you don't have a Microsoft 365 subscription, you might qualify for a Microsoft 365 E5 developer subscription for development purposes through the [Microsoft 365 Developer Program](https://aka.ms/m365devprogram); for details, see the [FAQ](https://learn.microsoft.com/office/developer-program/microsoft-365-developer-program-faq#who-qualifies-for-a-microsoft-365-e5-developer-subscription-). Alternatively, you can [sign up for a 1-month free trial](https://www.microsoft.com/microsoft-365/try) or [purchase a Microsoft 365 plan](https://www.microsoft.com/microsoft-365/business/compare-all-microsoft-365-business-products-g).
+## Build and run the solution
 
-- A recent version of [npm](https://www.npmjs.com/get-npm) and [Node.js](https://nodejs.org/en/) installed on your computer. These are required if you want to run the web server on localhost. To check if you have already installed these tools, run the commands `node -v` and `npm -v` in your terminal.
-- (Optional) [Microsoft 365 Agents Toolkit extension for VS Code](https://learn.microsoft.com/microsoftteams/platform/toolkit/install-teams-toolkit) if you want to deploy the sample to Microsoft Azure with the [unified Microsoft 365 manifest](https://learn.microsoft.com/office/dev/add-ins/develop/json-manifest-overview).
+### Create an application registration
 
-## Solution
+1. Go to the [Azure portal - App registrations](https://go.microsoft.com/fwlink/?linkid=2083908) page to register your app.
+1. Sign in with the **_admin_** credentials to your Microsoft 365 tenancy. For example, **MyName@contoso.onmicrosoft.com**.
+1. Select **New registration**. On the **Register an application** page, set the values as follows.
 
-| Solution | Author(s) |
-|---------|----------|
-| Use Outlook event-based activation to set the signature | Microsoft |
+   - Set **Name** to `Outlook-Add-in-SSO-NAA`.
+   - Set **Supported account types** to **Accounts in any organizational directory (Any Microsoft Entra ID tenant - Multitenant) and personal Microsoft accounts (e.g. Skype, Xbox)**.
+   - In the **Redirect URI** section, ensure that **Single-page application (SPA)** is selected in the drop down and then set the URI to `brk-multihub://localhost:3000`. This allows Office to broker the auth request.
+   - Select **Register**.
 
-## Version history
+1. On the **Outlook-Add-in-SSO-NAA** page, copy and save the value for the **Application (client) ID**. You'll use it in the next section.
+1. Under **Manage** select **Authentication**.
+1. In the **Single-page application** pane, select **Add URI**.
+1. Enter the value `https://localhost:3000/auth.html` and select **Save**. This redirect handles the fallback scenario when browser auth is used from add-in.
+1. In the **Single-page application** pane, select **Add URI**.
+1. Enter the value `https://localhost:3000/dialog.html` and select **Save**. This redirect handles the fallback scenario when the Office dialog API is used.
 
-| Version  | Date | Comments |
-|---------|------|---------|
-| 1.0 | 4-1-2021 | Initial release |
-| 1.1 | 6-1-2021 | Update for GA of setSignature API |
-| 1.2 | 7-27-2021 | Convert to GitHub hosting |
-| 1.3 | 4-17-2023 | Add support for unified Microsoft 365 manifest |
-| 1.4 | 5-20-2024 | Normalize use of unified Microsoft 365 manifest |
+For more information on how to register your application, see [Register an application with the Microsoft Identity Platform](https://learn.microsoft.com/graph/auth-register-app-v2).
 
-## Scenario: Event-based activation
+### Configure the sample
 
-In this scenario, the add-in helps the user manage their email signature, even when the task pane isn't open. When the user sends a new message, or creates a new appointment, the add-in displays an information bar prompting the user to create a signature. If the user chooses to set a signature, the add-in opens the task pane for the user to continue setting their signature.
+1. Clone or download this repository.
+1. From the command line, or a terminal window, go to the root folder of this sample at `/samples/auth/Outlook-Add-in-SSO-NAA`.
+1. Open the `src/taskpane/msalconfig.ts` file.
+1. Replace the placeholder "Enter_the_Application_Id_Here" with the Application ID that you copied.
+1. Save the file.
+
+## Choose a manifest type
+
+By default, the sample uses an add-in only manifest. However, you can switch the project between the add-in only manifest and the unified manifest. For more information about the differences between them, see [Office Add-ins manifest](https://learn.microsoft.com/en-us/office/dev/add-ins/develop/add-in-manifests).
+If you want to continue with the add-in only manifest, skip ahead to the [Run the sample](#run-the-sample) section.
+
+### To switch to the Unified manifest for Microsoft 365
+
+Copy all files from the **manifest-configurations/unified** subfolder to the sample's root folder, replacing any existing files that have the same names. We recommend that you delete the **manifest.xml** file from the root folder, so only files needed for the unified manifest are present in the root. Then continue with the [Run the sample](#run-the-sample) section.
+
+### To switch back to the Add-in only manifest
+
+If you want to switch back to the add-in only manifest, copy the files in the **manifest-configurations/add-in-only** subfolder to the sample's root folder. We recommend that you delete the **manifest.json** file from the root folder.
+
 
 ## Run the sample
 
-There are multiple ways to run this sample.
-
-### Run the sample using GitHub as the web host
-
-The quickest way to run the sample is to use GitHub as the web host. However you can't debug or change the source code. The add-in web files are served from this repo on GitHub.
-
-1. Download the **manifest.xml** file from this sample to a folder on your computer.
-1. Sideload the add-in manifest in Outlook on the web, on Windows (new or classic), or on Mac by following the instructions in the article [Sideload Outlook add-ins for testing](https://learn.microsoft.com/office/dev/add-ins/outlook/sideload-outlook-add-ins-for-testing).
-
-### Run the sample on localhost with the unified Microsoft 365 manifest
-
-You can run the sample using the [unified Microsoft 365 manifest](https://learn.microsoft.com/office/dev/add-ins/develop/json-manifest-overview).
-
-1. Clone or download this repository.
-1. From the command line, or a terminal window, go to the project folder ```/samples/outlook-set-signature```.
 1. Run the following commands.
 
-    ```console
-    npm install
-    npm start
-    ```
+   `npm install`
+   `npm run start`
 
-This will start the web server on localhost. When you want to stop the web server, run `npm stop`.
+   This will start the web server and sideload the add-in to Outlook.
 
-To debug task pane code, see [Debug add-ins on Windows using Visual Studio Code and Microsoft Edge WebView2 (Chromium-based)](https://learn.microsoft.com/office/dev/add-ins/testing/debug-desktop-using-edge-chromium) and related articles.
+1. In Outlook, compose a new email message.
+1. On the ribbon for the message, look for the **Show task pane** button and select it.
+1. When the task pane opens, there are two buttons: **Get user data** and **Get user files**.
+1. To see the signed in user's name and email, select **Get user data**.
+1. To insert the first 10 filenames from the signed in user's Microsoft OneDrive, select **Get user files**.
 
->Note: You can't debug event-based activation code using the unified manifest at this time.
+You will be prompted to consent to the scopes the sample needs when you select the buttons.
 
-### Run the sample on localhost with manifest.xml
+## Debugging steps
 
-You can host the web server on localhost and use the manifest.xml file to sideload and run the sample.
+You can debug the sample by opening the project in VS Code.
 
-1. Run the following commands.
+1. Select the **Run and Debug** icon in the **Activity Bar** on the side of VS Code. You can also use the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd>.
+1. Select the launch configuration you want from the **Configuration dropdown** in the **Run and Debug** view. For example, **Outlook Desktop (Edge Chromium)**.
+1. Start your debug session with **F5**, or **Run** > **Start Debugging**.
 
-    ```console
-    npm install
-    npm run start:xml
-    ```
+![The VS Code debug view.](./assets/vs-code-debug-view.png)
 
-This will start the web server on localhost. When you want to stop the web server, run `npm run stop:xml`.
-
-To debug event-based activation code, see [Debug your event-based Outlook add-in](https://learn.microsoft.com/office/dev/add-ins/outlook/debug-autolaunch)
-
-To debug task pane code, see [Debug add-ins on Windows using Visual Studio Code and Microsoft Edge WebView2 (Chromium-based)](https://learn.microsoft.com/office/dev/add-ins/testing/debug-desktop-using-edge-chromium) and related articles.
-
-### Try it out
-
-Once the add-in is loaded use the following steps to try out the functionality.
-
-1. Open Outlook on Windows (new or classic), on Mac, or in a browser.
-1. Create a new message or appointment.
-
-    > You should see a notification at the top of the message that reads: **Please set your signature with the Office Add-ins sample.**
-
-1. Choose **Set signatures**. This will open the task pane for the add-in.
-1. In the task pane fill out the fields for your signature data. Then choose **Save**.
-1. The task pane will load a page of sample templates. You can assign the templates to a **New Mail**, **Reply**, or **Forward** action. Once you've assign the templates you want to use, choose **Save**.
-
-The next time you create a message or appointment, you'll see the signature you selected applied by the add-in.
-
-## Deploy to Azure
-
-This sample supports deployment to Azure with the unified manifest.
-
-### From Visual Studio Code
-
-1. Open Microsoft 365 Agents Toolkit, and sign into Azure by choosing `Sign in to Azure` under the **ACCOUNTS** section from sidebar.
-1. After you sign in, select a subscription under your account.
-1. Choose `Provision` from the **LIFECYCLE** section or open the command palette and select: `Microsoft 365 Agents: Provision`.
-1. Choose `Deploy` or open the command palette and select: `Microsoft 365 Agents: Deploy`.
-
-Once the sample is successfully deployed follow these steps:
-
-1. Open the `./webpack.config.js` file.
-1. Change the `urlProd` constant to use the endpoint of your new Azure deployment. The correct endpoint is listed in the VS Code **OUTPUT** window from running previous commands. Or you can go to your Azure portal and go to the new storage account. Then choose **Data management > Static website** and copy the **Primary endpoint** value.
-1. Save the changes to `webpack.config.js` and run the `npm run build` command. This will generate a new `manifest.json` file in the `dist` folder that will load the add-in resources from your storage account.
-1. Run the command `npm run start:prod` to start Outlook and sideload the manifest.json from the `dist` folder. Outlook will start and then load the sample add-in from the deployed storage account.
+For more information on debugging with VS Code, see [Debugging](https://code.visualstudio.com/Docs/editor/debugging). For more information on debugging Office Add-ins in VS Code, see [Debug Office Add-ins on Windows using Visual Studio Code and Microsoft Edge WebView2 (Chromium-based)](https://learn.microsoft.com/office/dev/add-ins/testing/debug-desktop-using-edge-chromium)
 
 ## Key parts of this sample
 
-The manifest configures a runtime that is loaded specifically to handle event-based activation.
+The `src/taskpane/authConfig.ts` file contains the MSAL code for configuring and using NAA. It contains a class named AccountManager which manages getting user account and token information.
 
-### Configure event-based activation in the manifest.xml file
+- The `initialize` function is called from Office.onReady to configure and initialize MSAL to use NAA.
+- The `ssoGetAccessToken` function gets an access token for the signed in user to call Microsoft Graph APIs.
+- The `getTokenWithDialogApi` function uses the Office dialog API to support a fallback option if NAA fails.
 
-The following `<Runtime>` element specifies an HTML page resource ID that loads the runtime on Outlook on the web, on Mac, and in new Outlook on Windows. The `<Override>` element specifies the JavaScript file instead, to load the runtime for Outlook on Windows. Outlook on Windows doesn't use the HTML page to load the runtime.
+The `src/taskpane/taskpane.ts` file contains code that runs when the user chooses buttons in the task pane. It uses the AccountManager class to get tokens or user information depending on which button is chosen.
 
-```xml
-<Runtime resid="Autorun">
-  <Override type="javascript" resid="runtimeJs"/>
-...
-<bt:Url id="Autorun" DefaultValue="https://officedev.github.io/Office-Add-in-samples/Samples/outlook-set-signature/src/runtime/HTML/autorunweb.html"></bt:Url>
-<bt:Url id="runtimeJs" DefaultValue="https://officedev.github.io/Office-Add-in-samples/Samples/outlook-set-signature/src/runtime/Js/autorunshared.js"></bt:Url>
+The `src/taskpane/msgraph-helper.ts` file contains code to construct and make a REST call to the Microsoft Graph API.
+
+### Fallback code
+
+The `fallback` folder contains files to fall back to an alternate authentication method if NAA is unavailable and fails. When your code calls `acquireTokenSilent`, and NAA is unavailable, an error is thrown. The next step is the code calls `acquireTokenPopup`. MSAL then attempts to sign in the user by opening a dialog box with `window.open` and `about:blank`. Some older Outlook clients don't support the `about:blank` dialog box and cause the `aquireTokenPopup` method to fail. You can catch this error and fall back to using the Office dialog API to open the auth dialog instead.
+
+- the `src/taskpane/authconfig.ts` file contains the following code to detect the error and fall back to using the Office dialog API.
+
+```typescript
+    // Optional fallback if about:blank popup should not be shown
+    if (popupError instanceof BrowserAuthError && popupError.errorCode === "popup_window_error") {
+        const accessToken = await this.getTokenWithDialogApi();
+        return accessToken;
 ```
 
-The add-in handles two events that are mapped to the `checkSignature()` function.
+- The `src/taskpane/fallback/fallbackauthdialog.ts` file contains code to initialize MSAL and acquire an access token. It sends the access token back to the task pane.
 
-`manifest.xml`
+## Security reporting
 
-```xml
-<LaunchEvents>
-  <LaunchEvent Type="OnNewMessageCompose" FunctionName="checkSignature" />
-  <LaunchEvent Type="OnNewAppointmentOrganizer" FunctionName="checkSignature" />
-</LaunchEvents>
-```
+If you find a security issue with our libraries or services, report the issue to [secure@microsoft.com](mailto:secure@microsoft.com) with as much detail as you can provide. Your submission may be eligible for a bounty through the [Microsoft Bounty](https://aka.ms/bugbounty) program. Don't post security issues to [GitHub Issues](https://github.com/AzureAD/microsoft-authentication-library-for-android/issues) or any other public site. We'll contact you shortly after receiving your issue report. We encourage you to get new security incident notifications by visiting [Microsoft technical security notifications](https://technet.microsoft.com/security/dd252948) to subscribe to Security Advisory Alerts.
 
-### Configure event-based activation in the unified manifest file
+## More resources
 
-If you use the unified manifest, the `manifest.json` file specifies an HTML page resource ID that loads the runtime on Outlook on the web, on Mac, and in new Outlook on Windows. The `runtimes` array includes a runtime entry that describes the event-based activation required. The `code` object identities the HTML file to load. It also identifies a Javascript file to load when using Outlook on Windows.
-
-```json
- "runtimes": [
-                {
-                    "requirements": {
-                        "capabilities": [
-                            {
-                                "name": "Mailbox",
-                                "minVersion": "1.5"
-                            }
-                        ]
-                    },
-                    "id": "runtime_1",
-                    "type": "general",
-                    "code": {
-                        "page": "https://localhost:3000/autorunweb.html",
-                        "script": "https://localhost:3000/autorunshared.js"
-                    },
-                    "lifetime": "short",
-                    "actions": [
-                        {
-                            "id": "checkSignature",
-                            "type": "executeFunction",
-                            "displayName": "checkSignature"
-                        }
-                    ]
-                },
-...
-```
-
-The add-in handles two events that are mapped to the `checkSignature()` function. They are described in the `autoRunEvents` array. Note that the `actionID` must match an `id` specified in the previous `actions` array.
-
-```json
- "autoRunEvents": [
-      {
-          "requirements": {
-              "capabilities": [
-                  {
-                      "name": "Mailbox",
-                      "minVersion": "1.5"
-                  }
-              ],
-              "scopes": [
-                  "mail"
-              ]
-          },
-          "events": [
-              {
-                  "type": "newMessageComposeCreated",
-                  "actionId": "checkSignature"
-              },
-              {
-                  "type": "newAppointmentOrganizerCreated",
-                  "actionId": "checkSignature"
-              }
-          ]
-      }
-  ],
-```
-
-### Handling the events and using the setSignatureAsync API
-
-When the user creates a new message or appointment, Outlook will load the files specified in the manifest to handle the `OnNewMessageCompose` and `OnNewAppointmentOrganizer` events. Outlook on the web, on Mac, and new Outlook on Windows will load the `autorunweb.html` page, which then also loads `autorunweb.js` and `autorunshared.js`.
-
-The `autorunweb.js` file contains a version of the `insert_auto_signature` function used specifically when running on Outlook on the web or new Outlook on Windows. The [setSignatureAsync() API can't be used in Outlook on the web or new Outlook on Windows for appointments](https://learn.microsoft.com/javascript/api/outlook/office.body#outlook-office-body-setsignatureasync-member(1)). Therefore, `insert_auto_signature` inserts the signature into a new appointment by directly writing to the body text of the appointment.
-
-The `autorunshared.js` file contains the `checkSignature` function that handles the events from Outlook. It also contains additional code that is shared and loaded when the add-in is used in Outlook on the web, on Windows (new and classic), and on Mac. In classic Outlook on Windows, this file is loaded directly and `autorunweb.html` and `autorunweb.js` aren't loaded.
-
-The `autorunshared.js` file contains a version of the `insert_auto_signature` function that uses the `setSignatureAsync()` API to set the signature for both messages and appointments.
-
-Note that you can use a similar pattern when handling events. If you need code that only applies to Outlook on the web and new Outlook on Windows, you can load it in a separate file like `autorunweb.js`. And for code that applies to Outlook on the web, on Windows (new and classic), and on Mac, you can load it in a shared file like `autorunshared.js`.
-
-### Embedding images with the signature
-
-Template A shows how to insert an image by embedding it in the signature. This will avoid the image being downloaded from your server when the signature is inserted into new mail items. The HTML uses the following `<img>` tag format with the **src** set to **cid:*imageFileName*** to embed the image.
-
-```xml
-str +=
-    "<td style='border-right: 1px solid #000000; padding-right: 5px;'><img src='cid:" +
-    logoFileName +
-    "' alt='MS Logo' width='24' height='24' /></td>";
-```
-
-In the **addTemplateSignature** function, if template A is used, it will attach the image by calling the **addFileAttachmentFromBase64Async()** API. Then it calls the **setSignatureAsync()** API.
-
-### Referencing images from the signature
-
-Template B shows how to reference an image from the HTML. It uses the `<img>` tag and references the web location.
-
-```xml
- str +=
-    "<td style='border-right: 1px solid #000000; padding-right: 5px;'><img src='https://officedev.github.io/Office-Add-in-samples/Samples/outlook-set-signature/assets/sample-logo.png' alt='Logo' /></td>";
-```
-
-This is a simpler approach as you don't need to attach the image. Although your web server will need to provide the image anytime Outlook needs it for a signature.
-
-### Task pane code
-
-The task pane code is located under the `taskpane` folder of this project. The task pane HTML and JavaScript files only provide UI and functionality to let the user specify and save a signature.
-
-- `editsignature.html` is loaded when the task pane first opens. It lets the user enter details such as name and title for their signature.
-- `assignsignature.html` is loaded when the user saves their details from the `editsignature.html` page. It lets the user assign the signature to actions such as "new email", "reply", and "forward.
+- NAA docs to get started: https://aka.ms/NAAdocs
+- NAA FAQ: https://aka.ms/NAAFAQ
+- NAA Word, Excel, and PowerPoint sample: https://aka.ms/NAAsampleOffice
 
 ## Questions and feedback
 
@@ -291,8 +154,8 @@ The task pane code is located under the `taskpane` folder of this project. The t
 
 ## Copyright
 
-Copyright (c) 2021 Microsoft Corporation. All rights reserved.
+Copyright (c) 2024 Microsoft Corporation. All rights reserved.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-<img src="https://pnptelemetry.azurewebsites.net/pnp-officeaddins/samples/outlook-autorun-set-signature" />
+<img src="https://pnptelemetry.azurewebsites.net/pnp-officeaddins/samples/outlook-add-in-sso-naa" />
