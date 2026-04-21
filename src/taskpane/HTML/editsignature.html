@@ -10,6 +10,16 @@
   <link href="../CSS/editsignature.css" rel="stylesheet" type="text/css" media="all" />
   <script type="module">
     import { createNestablePublicClientApplication } from "@azure/msal-browser";
+
+    Office.onReady(async () => {
+    // Initialiseer de nestable client
+    msalClient = await msal.createNestablePublicClientApplication({
+        auth: {
+            clientId: "e918ad24-1435-4770-b576-3a17f2a8b25a",
+            authority: "https://microsoftonline.com"
+        }
+    });
+  });
   </script>
   <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

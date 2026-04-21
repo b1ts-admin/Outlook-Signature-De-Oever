@@ -18,16 +18,6 @@ Office.initialize = function(reason)
 
 let msalClient;
 
-Office.onReady(async () => {
-    // Initialiseer de nestable client
-    msalClient = await msal.createNestablePublicClientApplication({
-        auth: {
-            clientId: "e918ad24-1435-4770-b576-3a17f2a8b25a",
-            authority: "https://microsoftonline.com"
-        }
-    });
-});
-
 async function getJobTitleWithNAA() {
     const authRequest = {
         scopes: ["User.Read"],
