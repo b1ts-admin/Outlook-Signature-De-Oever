@@ -16,9 +16,9 @@ Office.initialize = function(reason)
   on_initialization_complete();
 }
 
-const pca;
+let pca;
 
-const msalConfig;
+let msalConfig;
 
 async function initializeNAA() {
     const msalConfig = {
