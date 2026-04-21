@@ -16,8 +16,6 @@ Office.initialize = function(reason)
   on_initialization_complete();
 }
 
-import { createNestablePublicClientApplication } from "@azure/msal-browser";
-
 let msalClient;
 
 Office.onReady(async () => {
