@@ -18,6 +18,15 @@ Office.initialize = function(reason)
 
 let pca; // We gebruiken één globale variabele voor de MSAL instantie
 
+Office.onReady(async (info) => {
+    if (typeof msal === 'undefined') {
+        console.error("MSAL bibliotheek is nog niet geladen!");
+        return;
+    }
+    // Nu pas kun je initializeNAA() aanroepen
+    await initializeNAA();
+});
+
 async function initializeNAA() {
     const msalConfig = {
         auth: {
