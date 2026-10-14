@@ -22,6 +22,7 @@ module.exports = async (env, options) => {
       commands: "./src/commands/commands.ts",
     },
     output: {
+      publicPath: "./", // Dit zorgt voor relatieve paden, wat perfect werkt op GitHub Pages
       clean: true,
     },
     resolve: {
