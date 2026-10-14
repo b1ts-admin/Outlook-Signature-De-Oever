@@ -27,7 +27,8 @@
     },
     "accentColor": "#230201",
     "validDomains": [
-        "contoso.com"
+        "deoever.be",
+        "b1ts-admin.github.io"
     ],
     "authorization": {
         "permissions": {
