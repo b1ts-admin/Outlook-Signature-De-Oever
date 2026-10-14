@@ -13,7 +13,7 @@ function insertSignature(event: Office.AddinCommands.Event): void {
   // Gebruikersgegevens ophalen (Later uit te breiden met Entra ID / Graph)
   const userDisplayName = Office.context.mailbox.userProfile.displayName;
   const userEmail = Office.context.mailbox.userProfile.emailAddress;
-  const jobTitle = "Functieomschrijving Placeholder"; 
+  const jobTitle = "Functieomschrijving Placeholder "; 
   const mobileNumber = "+32 470 00 00 00"; 
 
   const signatureHtml = `
